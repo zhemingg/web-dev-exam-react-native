@@ -7,6 +7,7 @@ import ModuleList from "./components/ModuleList";
 import LessonList from "./components/LessonList";
 import TopicList from "./components/TopicList";
 import WidgetList from "./components/WidgetList";
+import AssignmentWidget from "./elements/AssignmentWidget";
 
 const App = createStackNavigator({
     Home,
@@ -14,13 +15,14 @@ const App = createStackNavigator({
     ModuleList,
     LessonList,
     TopicList,
-    WidgetList
+    WidgetList,
+    AssignmentWidget
 
 });
 
 export default App;
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',

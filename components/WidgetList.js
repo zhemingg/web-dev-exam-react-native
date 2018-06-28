@@ -1,6 +1,7 @@
-import React, {Component} from 'react'
-import {View, Alert} from 'react-native'
-import {Text, ListItem} from 'react-native-elements'
+import React, {Component} from 'react';
+import {View, Alert, ScrollView} from 'react-native';
+import {Text, ListItem} from 'react-native-elements';
+import {Button} from 'react-native-elements';
 
 class WidgetList extends Component {
     static navigationOptions = {title: 'Widgets'}
@@ -21,7 +22,7 @@ class WidgetList extends Component {
     }
     render() {
         return(
-            <View style={{padding: 15}}>
+            <ScrollView style={{padding: 15}}>
                 {this.state.widgets.map(
                     (widget, index) => (
                         <ListItem
@@ -30,7 +31,14 @@ class WidgetList extends Component {
                             key={index}
                             // subtitle={widget.description}
                             title={widget.name}/>))}
-            </View>
+                <Button title="Create Assignment"
+                        onPress={() => this.props.navigation
+                            .navigate('WidgetList')}/>
+                <Button title="Create Widget"
+                        onPress={() => this.props.navigation
+                            .navigate('WidgetList')}/>
+
+            </ScrollView>
         )
     }
 }
