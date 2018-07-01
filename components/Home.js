@@ -26,7 +26,7 @@ export default class Home extends React.Component{
 
                 <Button title="Go to WidgetList"
                         onPress={() => this.props.navigation
-                            .navigate('WidgetList')}/>
+                            .navigate('WidgetList',{topicId:32})}/>
                 <Button title="Go to AssignmentWidget"
                         onPress={() => this.props.navigation
                             .navigate('AssignmentWidget')}/>

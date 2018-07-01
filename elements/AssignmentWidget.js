@@ -1,5 +1,5 @@
 import React from 'react';
-import AssignmentWidgetServiceClient from '../services-client/AssignmentWidgetServiceClient ';
+import AssignmentWidgetServiceClient from '../servicesClient/AssignmentWidgetServiceClient';
 import {ScrollView, TextInput, Text, StyleSheet, View} from 'react-native';
 import {FormLabel, FormInput, FormValidationMessage, Button, ListItem} from 'react-native-elements';
 
@@ -8,32 +8,52 @@ export default class AssignmentWidget extends React.Component {
 
     constructor(props) {
         super(props);
+        //console.log(this.props);
         this.state = {
-            assignmentId: "",
-            points: '0',
-            description: '',
+            topicId: "",
             preview: false,
-            assignmentName: "New Assignment"
+            type: "",
+            assignment: {
+                id: "",
+                points: '',
+                description: '',
+                title: "",
+                widgetType: 'assignment'
+            }
         }
         this.AssignmentWidgetServiceClient = AssignmentWidgetServiceClient.instance;
         this.findAssignmentById = this.findAssignmentById.bind(this);
         this.viewMode = this.viewMode.bind(this);
+        this.saveAssignment = this.saveAssignment.bind(this);
+        this.updateAssignment = this.updateAssignment.bind(this);
+        this.saveOrUpdate = this.saveOrUpdate.bind(this);
+        // this.findAllAssignmentForTopic = this.findAllAssignmentForTopic.bind(this);
     }
 
     componentDidMount() {
-        // const {navigation} = this.props;
-        // //const topicId = navigation.getParam("topicId")
-        // const topicId = "32"
-        // this.findAssignmentById(this.state.assignmentId);
-        // fetch("http://localhost:8080/api/topic/" + topicId + "/widget")
-        //     .then(response => (response.json()))
-        //     .then(widgets => this.setState({widgets}))
+        // this.setState({assignmentId: this.props.navigation.getParam("assignment").assignmentId})
+        const {navigation} = this.props;
+        const topicId = navigation.getParam("topicId");
+        const type = navigation.getParam("type");
+        this.setState({topicId});
+        this.setState({type});
+        if (type === 'update'){
+            let tempAssignment = navigation.getParam('assignment');
+            let assignment = {
+                id: tempAssignment.id,
+                points: tempAssignment.points,
+                description: tempAssignment.description,
+                title: tempAssignment.title,
+                widgetType: 'assignment'
+            }
+            this.setState({assignment});
+        }
+
     }
 
     findAssignmentById(id) {
         this.AssignmentWidgetServiceClient
             .findAssignmentById(id);
-
     }
 
 
@@ -42,9 +62,9 @@ export default class AssignmentWidget extends React.Component {
             return (
                 <View>
                     <Text>Preview</Text>
-                    <Text>{this.state.assignmentName}</Text>
-                    <Text>{this.state.points}</Text>
-                    <Text>{this.state.description}</Text>
+                    <Text>{this.state.assignment.title}</Text>
+                    <Text>{this.state.assignment.points}</Text>
+                    <Text>{this.state.assignment.description}</Text>
                     <FormLabel>Essay answer</FormLabel>
                     <FormInput></FormInput>
 
@@ -58,33 +78,76 @@ export default class AssignmentWidget extends React.Component {
 
                     <Button title="Cancel"/>
                     <Button title="Submit"/>
-
-
-                    
-
-
-
                 </View>
             );
         } else {
             return (
                 <View>
-                    <FormLabel>Assignment Name</FormLabel>
-                    <FormInput></FormInput>
+                    <FormLabel>Assignment Title</FormLabel>
+                    <FormInput onChangeText={(text) => {
+                        let assignment = this.state.assignment;
+                        assignment.title = text;
+                        this.setState({assignment: assignment})
+                    }}
+                               placeholder = {'Please add title'}
+                               value={this.state.assignment.title}/>
 
                     <FormLabel>Assignment Points</FormLabel>
-                    <FormInput></FormInput>
+                    <FormInput onChangeText={(text) => {
+                        let assignment = this.state.assignment;
+                        assignment.points = text;
+                        this.setState({assignment: assignment})
+                    }}
+                               placeholder = {'Please set points'}
+                               value={this.state.assignment.points}/>
 
                     <FormLabel>Assignment Description</FormLabel>
                     <TextInput
                         multiline={true}
                         numberOfLines={10}
-                        onChangeText={(description) => this.setState({description})}
-                        value={this.state.description}/>
-                    <Button title="Save"/>
+                        onChangeText={(text) => {
+                            let assignment = this.state.assignment;
+                            assignment.description = text;
+                            this.setState({assignment: assignment})
+                        }}
+                        placeholder = {'Please add description'}
+                        value={this.state.assignment.description}/>
+                    <Button title="Save"
+                            onPress={() => {
+                                //console.log(this.state);
+                                this.saveOrUpdate(this.state.type)
+                                // .then(this.props.navigation.getParam('findAll')(this.state.topicId))
+                                .then(this.props.navigation.goBack())}
+                            }/>
                 </View>
             );
         }
+    }
+
+    saveOrUpdate(type) {
+        let ref = this.props.navigation.getParam('findAll');
+        if (type === 'create') {
+            //console.log('create');
+            return this.saveAssignment(this.state.assignment).then(() => ref())
+
+        } else {
+            //console.log('update');
+            return this.updateAssignment(this.state.assignment).then(() => ref())
+
+        }
+
+    }
+
+    saveAssignment(assignment) {
+        return this.AssignmentWidgetServiceClient
+            .createAssignment(this.state.topicId, assignment);
+    }
+
+    updateAssignment(assignment) {
+        //console.log(assignment);
+        return this.AssignmentWidgetServiceClient
+            .updateAssignment(assignment.id, assignment);
+
     }
 
     render() {
