@@ -1,7 +1,8 @@
 import React from 'react';
-import {ScrollView, View, TextInput} from 'react-native';
+import {ScrollView, View, TextInput, Alert} from 'react-native';
 import {Text, Button, FormLabel, FormInput, ListItem} from 'react-native-elements';
 import ExamWidgetServiceClient from "../servicesClient/ExamWidgetServiceClient";
+import QuestionTypePicker from "./QuestionTypePicker";
 
 export default class ExamWidget extends React.Component {
     static navigationOptions = {title: 'ExamWidget'};
@@ -126,6 +127,9 @@ export default class ExamWidget extends React.Component {
                                     .then(this.props.navigation.goBack())
                             }
                             }/>
+                    <QuestionTypePicker/>
+                    <Button title="Add a question"
+                            onPress={() => (Alert.alert('add question'))}/>
                 </View>
             );
         }
