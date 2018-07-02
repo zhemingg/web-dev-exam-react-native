@@ -22,7 +22,6 @@ export default class AssignmentWidget extends React.Component {
             }
         }
         this.AssignmentWidgetServiceClient = AssignmentWidgetServiceClient.instance;
-        this.findAssignmentById = this.findAssignmentById.bind(this);
         this.viewMode = this.viewMode.bind(this);
         this.saveAssignment = this.saveAssignment.bind(this);
         this.updateAssignment = this.updateAssignment.bind(this);
@@ -49,11 +48,6 @@ export default class AssignmentWidget extends React.Component {
             this.setState({assignment});
         }
 
-    }
-
-    findAssignmentById(id) {
-        this.AssignmentWidgetServiceClient
-            .findAssignmentById(id);
     }
 
 
@@ -127,11 +121,9 @@ export default class AssignmentWidget extends React.Component {
     saveOrUpdate(type) {
         let ref = this.props.navigation.getParam('findAll');
         if (type === 'create') {
-            //console.log('create');
             return this.saveAssignment(this.state.assignment).then(() => ref())
 
         } else {
-            //console.log('update');
             return this.updateAssignment(this.state.assignment).then(() => ref())
 
         }
@@ -144,7 +136,6 @@ export default class AssignmentWidget extends React.Component {
     }
 
     updateAssignment(assignment) {
-        //console.log(assignment);
         return this.AssignmentWidgetServiceClient
             .updateAssignment(assignment.id, assignment);
 

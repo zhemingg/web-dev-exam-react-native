@@ -1,7 +1,7 @@
 import React from 'react';
 import AssignmentWidgetServiceClient from '../servicesClient/AssignmentWidgetServiceClient';
-import {ScrollView, Text} from 'react-native';
-import {ListItem, Button, Icon} from 'react-native-elements';
+import {ScrollView} from 'react-native';
+import {ListItem, Button, Icon, Text} from 'react-native-elements';
 
 export default class AssignmentList extends React.Component {
     // static navigationOptions = {title: 'AssignmentList'}
@@ -43,7 +43,7 @@ export default class AssignmentList extends React.Component {
     render() {
         return(
             <ScrollView style={{padding: 15}}>
-                {console.log(this.state.assignments)}
+                <Text h2>Assignments</Text>
                 {this.state.assignments.map(
                     (assignment, index) => (
                         <ListItem
