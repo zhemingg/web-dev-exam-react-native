@@ -1,7 +1,7 @@
 import React from 'react';
 import AssignmentWidgetServiceClient from '../servicesClient/AssignmentWidgetServiceClient';
 import {ScrollView, TextInput, Text, StyleSheet, View} from 'react-native';
-import {FormLabel, FormInput, FormValidationMessage, Button, ListItem} from 'react-native-elements';
+import {FormLabel, FormInput, FormValidationMessage, Button} from 'react-native-elements';
 
 export default class AssignmentWidget extends React.Component {
     static navigationOptions = {title: 'AssignmentWidget'};

@@ -8,7 +8,7 @@ export default class ExamList extends React.Component{
         super(props);
         this.state = {
             exams:[],
-            topicId: 1
+            topicId: 1,
         }
 
         this.findAllExamForTopic = this.findAllExamForTopic.bind(this);

@@ -16,10 +16,6 @@ export default class AssignmentList extends React.Component {
         this.deleteAssignment = this.deleteAssignment.bind(this);
     }
 
-    // componentWillReceiveProps(newProps){
-    //     this.findAllAssignmentForTopic(newProps.topicId);
-    //
-    // }
 
     componentDidMount() {
         this.setState({topicId: this.props.topicId});

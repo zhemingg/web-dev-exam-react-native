@@ -9,6 +9,7 @@ import TopicList from "./components/TopicList";
 import WidgetList from "./components/WidgetList";
 import AssignmentWidget from "./elements/AssignmentWidget";
 import ExamWidget from "./elements/ExamWidget";
+import MultipleChoiceQuestionEditor from "./elements/MultipleChoiceQuestionEditor";
 
 const App = createStackNavigator({
     Home,
@@ -18,7 +19,8 @@ const App = createStackNavigator({
     TopicList,
     WidgetList,
     AssignmentWidget,
-    ExamWidget
+    ExamWidget,
+    MultipleChoiceQuestionEditor
 
 });
 
