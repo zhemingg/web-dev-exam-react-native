@@ -1,11 +1,12 @@
 import React from 'react';
 import {ScrollView, Text, TextInput, Alert, View} from 'react-native';
-import {FormLabel, FormInput, Button, CheckBox} from  'react-native-elements';
+import {FormLabel, FormInput, Button, CheckBox, ListItem, Icon} from 'react-native-elements';
 import MultipleChoiceQuestionServiceClient from "../servicesClient/MultipleChoiceQuestionServiceClient";
 
-export default class MultipleChoiceQuestionEditor extends React.Component{
+export default class MultipleChoiceQuestionEditor extends React.Component {
     static navigationOptions = {title: 'MultipleChoiceQuestionEditor'};
-    constructor(props){
+
+    constructor(props) {
         super(props);
         this.state = {
             question: {
@@ -13,14 +14,14 @@ export default class MultipleChoiceQuestionEditor extends React.Component{
                 title: '',
                 points: '',
                 description: '',
-                choices:[],
-                correctChoice:'',
-                questionType:'multipleChoiceQuestion'
+                choices: [],
+                correctChoice: '',
+                questionType: 'multipleChoiceQuestion'
             },
             tempChoice: '',
             preview: false,
-            type:'',
-            examId:'',
+            type: '',
+            examId: '',
 
         }
         this.MultipleChoiceQuestionServiceClient = MultipleChoiceQuestionServiceClient.instance;
@@ -42,7 +43,7 @@ export default class MultipleChoiceQuestionEditor extends React.Component{
         const question = navigation.getParam("question");
         this.setState({type});
         this.setState({examId})
-        if (type === 'update'){
+        if (type === 'update') {
             this.setState({question})
         }
 
@@ -54,31 +55,31 @@ export default class MultipleChoiceQuestionEditor extends React.Component{
         if (type === 'create') {
             return this.createQuestion(this.state.question).then(() => ref(this.state.examId))
         } else {
-            return this.updateQuestion(this.state.question).then(() =>ref(this.state.examId))
+            return this.updateQuestion(this.state.question).then(() => ref(this.state.examId))
         }
 
     }
 
-    createQuestion(question){
+    createQuestion(question) {
         return this.MultipleChoiceQuestionServiceClient
             .createMultipleChoiceQuestion(this.state.examId, question);
 
     }
 
-    updateQuestion(question){
+    updateQuestion(question) {
         return this.MultipleChoiceQuestionServiceClient
             .updateExam(question.id, question);
     }
 
-    deleteQuestion(){
-        if(this.state.question.id !== '') {
+    deleteQuestion() {
+        if (this.state.question.id !== '') {
             let ref = this.props.navigation.getParam('findAll');
             return this.MultipleChoiceQuestionServiceClient
                 .deleteMultipleChoiceQuestion(this.state.question.id).then(() => ref(this.state.examId));
         }
     }
 
-    addChoice(){
+    addChoice() {
         let questions = this.state.question;
         let choices = questions.choices;
         choices.push(this.state.tempChoice);
@@ -86,28 +87,28 @@ export default class MultipleChoiceQuestionEditor extends React.Component{
         this.setState({questions});
     }
 
-    setCorrectChoice(choice){
+    setCorrectChoice(choice) {
         let questions = this.state.question;
         questions.correctChoice = choice;
         this.setState({questions});
     }
 
-    checkValidOfChoice(){
-        if (this.state.tempChoice === ''){
+    checkValidOfChoice() {
+        if (this.state.tempChoice === '') {
             Alert.alert('The choice can not be empty');
             return false;
         }
         let choices = this.state.question.choices;
 
-        if (choices.indexOf(this.state.tempChoice) !== -1){
+        if (choices.indexOf(this.state.tempChoice) !== -1) {
             Alert.alert('The choice already added');
             return false;
         }
         return true;
     }
 
-    viewMode(isPreview){
-        if(isPreview){
+    viewMode(isPreview) {
+        if (isPreview) {
             return (
                 <View>
                     <Text>Preview</Text>
@@ -159,38 +160,60 @@ export default class MultipleChoiceQuestionEditor extends React.Component{
                                value={this.state.question.tempChoice}/>
                     <Button title="Add a choice"
                             onPress={() => {
-                                if (this.checkValidOfChoice()){
+                                if (this.checkValidOfChoice()) {
                                     this.addChoice();
                                 }
                             }}/>
                     <Button title="Cancel Modify"
                             onPress={() => (this.props.navigation.goBack())}/>
                     <Button title="Delete Question"
-                            onPress={() => {(this.deleteQuestion())
+                            onPress={() => {
+                                (this.deleteQuestion())
                                 this.props.navigation.goBack()
                             }}/>
                     <Button title="Save"
                             onPress={() => {
                                 this.saveOrUpdate(this.props.navigation.getParam('type'))
-                                this.props.navigation.goBack()}}/>
+                                this.props.navigation.goBack()
+                            }}/>
                     {this.renderChoice()}
                 </View>
             )
         }
     }
 
-    renderChoice(){
+    deleteChoice(choiceId){
+        console.log(choiceId)
+        let question = this.state.question;
+        console.log(question.choices)
+        question.choices.splice(choiceId,1);
+        console.log(question.choices)
+        this.setState(question);
+        //console.log(this.state.question.choices)
+    }
+
+    renderChoice() {
+
         return (
             this.state.question.choices.map(
                 (choice, index) => (
-                    <CheckBox key={index}
-                              title={choice}
-                              checkedIcon = 'dot-circle-o'
-                              uncheckedIcon = 'circle-o'
-                              containerStyle={this.state.question.correctChoice === choice && {backgroundColor:'lightskyblue'}}
-                              onPress = {() => this.setCorrectChoice(choice)}
-                              checked = {this.state.question.correctChoice === choice}
-                    />
+                    <View key={index}
+                          style={{
+                        flexDirection : 'row',
+                    }}>
+
+                        <CheckBox
+                                  title={choice}
+                                  checkedIcon='dot-circle-o'
+                                  uncheckedIcon='circle-o'
+                                  containerStyle={this.state.question.correctChoice === choice && {backgroundColor: 'lightskyblue'}}
+                                  onPress={() => this.setCorrectChoice(choice)}
+                                  checked={this.state.question.correctChoice === choice}
+                        />
+                        <Icon name={'delete'} size={30} color='red'
+                              onPress={() => this.deleteChoice(index)}/>
+                    </View>
+
 
                 )
             )
@@ -198,7 +221,7 @@ export default class MultipleChoiceQuestionEditor extends React.Component{
 
     }
 
-    render(){
+    render() {
         return (
             <ScrollView>
                 <Button title="Preview"
