@@ -4,7 +4,6 @@ import {Text, Button, FormLabel, FormInput, ListItem} from 'react-native-element
 import ExamWidgetServiceClient from "../servicesClient/ExamWidgetServiceClient";
 import QuestionTypePicker from './QuestionTypePicker';
 import BaseExamQuestionServiceClient from "../servicesClient/BaseExamQuestionServiceClient";
-import Swipeout from 'react-native-swipeout'
 
 export default class ExamWidget extends React.Component {
     static navigationOptions = {title: 'ExamWidget'};
@@ -114,7 +113,11 @@ export default class ExamWidget extends React.Component {
         } else if (questionType === 'FB') {
 
         } else {
-
+            this.props.navigation.navigate('EssayQuestionEditor', {
+                type: 'create',
+                examId: this.state.exam.id,
+                findAll: this.findAllQuestionsForExam
+            })
         }
     }
 
@@ -145,10 +148,15 @@ export default class ExamWidget extends React.Component {
                         (question, index) => {
                             if (question.questionType == 'essayQuestion') {
                                 return (
-
                                     <ListItem
-                                        leftIcon={{name: 'code'}}
-                                        title={question.title} key={index}/>
+                                        leftIcon={{name: 'subject'}}
+                                        title={question.title} key={index}
+                                        onPress = {() => this.props.navigation.navigate('EssayQuestionEditor', {
+                                            type: 'update',
+                                            examId: this.state.exam.id,
+                                            question: question,
+                                            findAll: this.findAllQuestionsForExam
+                                        })}/>
                                 )
                             }
 

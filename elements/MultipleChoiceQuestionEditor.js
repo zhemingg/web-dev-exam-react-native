@@ -46,8 +46,6 @@ export default class MultipleChoiceQuestionEditor extends React.Component {
         if (type === 'update') {
             this.setState({question})
         }
-
-
     }
 
     saveOrUpdate(type) {
@@ -68,7 +66,7 @@ export default class MultipleChoiceQuestionEditor extends React.Component {
 
     updateQuestion(question) {
         return this.MultipleChoiceQuestionServiceClient
-            .updateExam(question.id, question);
+            .updateMultipleChoiceQuestion(question.id, question);
     }
 
     deleteQuestion() {
@@ -171,7 +169,7 @@ export default class MultipleChoiceQuestionEditor extends React.Component {
                                 (this.deleteQuestion())
                                 this.props.navigation.goBack()
                             }}/>
-                    <Button title="Save"
+                    <Button title="Submit"
                             onPress={() => {
                                 this.saveOrUpdate(this.props.navigation.getParam('type'))
                                 this.props.navigation.goBack()
