@@ -109,6 +109,11 @@ export default class ExamWidget extends React.Component {
                 findAll: this.findAllQuestionsForExam
             })
         } else if (questionType === 'TF') {
+            this.props.navigation.navigate('TrueOrFalseQuestionEditor', {
+                type: 'create',
+                examId: this.state.exam.id,
+                findAll: this.findAllQuestionsForExam
+            })
 
         } else if (questionType === 'FB') {
             this.props.navigation.navigate('FillInTheBlankQuestionEditor', {
@@ -187,6 +192,21 @@ export default class ExamWidget extends React.Component {
                                         leftIcon={{name: 'code'}}
                                         title={question.title} key={index}
                                         onPress = {() => this.props.navigation.navigate('FillInTheBlankQuestionEditor', {
+                                            type: 'update',
+                                            examId: this.state.exam.id,
+                                            question: question,
+                                            findAll: this.findAllQuestionsForExam
+                                        })}/>
+                                )
+                            }
+
+
+                            if (question.questionType === 'trueOrFalseQuestion') {
+                                return (
+                                    <ListItem
+                                        leftIcon={{name: 'check'}}
+                                        title={question.title} key={index}
+                                        onPress = {() => this.props.navigation.navigate('TrueOrFalseQuestionEditor', {
                                             type: 'update',
                                             examId: this.state.exam.id,
                                             question: question,

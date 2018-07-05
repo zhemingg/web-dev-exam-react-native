@@ -12,6 +12,7 @@ import ExamWidget from "./elements/ExamWidget";
 import MultipleChoiceQuestionEditor from "./elements/MultipleChoiceQuestionEditor";
 import EssayQuestionEditor from "./elements/EssayQuestionEditor";
 import FillInTheBlankQuestionEditor from "./elements/FillInTheBlankQuestionEditor";
+import TrueOrFalseQuestionEditor from "./elements/TrueOrFalseQuestionEditor";
 
 const App = createStackNavigator({
     Home,
@@ -24,7 +25,8 @@ const App = createStackNavigator({
     ExamWidget,
     MultipleChoiceQuestionEditor,
     EssayQuestionEditor,
-    FillInTheBlankQuestionEditor
+    FillInTheBlankQuestionEditor,
+    TrueOrFalseQuestionEditor
 
 });
 
