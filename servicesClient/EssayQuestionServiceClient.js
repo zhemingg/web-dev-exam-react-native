@@ -42,7 +42,7 @@ class EssayQuestionServiceClient{
     }
 
     deleteEssayQuestion(questionId){
-        return fetch("http://localhost:8080/api/essayQuestion/" + questionId,{
+        return fetch("http://localhost:8080/api/baseExamQuestion/" + questionId,{
             method: 'delete'
         }).then(response => (response))
     }

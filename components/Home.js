@@ -1,11 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, ScrollView } from 'react-native';
+import {StatusBar, ScrollView, View} from 'react-native';
 import FixedHeader from '../elements/FixedHeader';
 import {Button} from 'react-native-elements';
 import CourseList from '../components/CourseList';
-import WidgetList from '../components/WidgetList'
 
-export default class Home extends React.Component{
+export default class Home extends React.Component {
     static navigationOptions = {
         title: 'Home'
     }
@@ -14,22 +13,21 @@ export default class Home extends React.Component{
         super(props)
     }
 
-    render(){
+    render() {
         return (
             <ScrollView>
                 <StatusBar barStyle="light-content"/>
                 <FixedHeader/>
-                <Button title="Courses"
-                        onPress={() => this.props.navigation
-                            .navigate('CourseList')} />
-
-
+                    <Button title="Courses"
+                            onPress={() => this.props.navigation
+                                .navigate('CourseList')}
+                            buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
+                    />
                 <Button title="Go to WidgetList"
                         onPress={() => this.props.navigation
-                            .navigate('WidgetList',{topicId:32})}/>
-                <Button title="Go to AssignmentWidget"
-                        onPress={() => this.props.navigation
-                            .navigate('AssignmentWidget')}/>
+                            .navigate('WidgetList', {topicId: 32})}
+                        buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
+                />
             </ScrollView>
         )
     }

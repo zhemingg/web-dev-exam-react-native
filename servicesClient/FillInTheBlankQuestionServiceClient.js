@@ -42,7 +42,7 @@ class FillInTheBlankQuestionServiceClient{
     }
 
     deleteFillInTheBlankQuestion(questionId){
-        return fetch("http://localhost:8080/api/fillInTheBlankQuestion/" + questionId,{
+        return fetch("http://localhost:8080/api/baseExamQuestion/" + questionId,{
             method: 'delete'
         }).then(response => (response))
     }

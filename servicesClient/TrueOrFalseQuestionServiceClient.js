@@ -42,7 +42,7 @@ class TrueOrFalseQuestionServiceClient{
     }
 
     deleteTrueOrFalseQuestion(questionId){
-        return fetch("http://localhost:8080/api/trueOrFalseQuestion/" + questionId,{
+        return fetch("http://localhost:8080/api/baseExamQuestion/" + questionId,{
             method: 'delete'
         }).then(response => (response))
     }

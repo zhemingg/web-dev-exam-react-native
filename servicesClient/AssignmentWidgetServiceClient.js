@@ -42,7 +42,7 @@ class AssignmentWidgetServiceClient{
     }
 
     deleteAssignment(assignmentId){
-        return fetch("http://localhost:8080/api/assignment/" + assignmentId,{
+        return fetch("http://localhost:8080/api/widget/" + assignmentId,{
             method: 'delete'
         }).then(response => (response))
     }

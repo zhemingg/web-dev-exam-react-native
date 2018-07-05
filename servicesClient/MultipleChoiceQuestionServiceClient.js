@@ -42,7 +42,7 @@ class MultipleChoiceQuestionServiceClient{
     }
 
     deleteMultipleChoiceQuestion(questionId){
-        return fetch("http://localhost:8080/api/multipleChoiceQuestion/" + questionId,{
+        return fetch("http://localhost:8080/api/baseExamQuestion/" + questionId,{
             method: 'delete'
         }).then(response => (response))
     }

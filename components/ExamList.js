@@ -57,7 +57,9 @@ export default class ExamList extends React.Component{
                     ))}
                 <Button title="Create Exam"
                         onPress={() => this.props.navigation.navigate('ExamWidget',
-                            {topicId: this.state.topicId, type: 'create', findAll:this.findAllExamForTopic})}/>
+                            {topicId: this.state.topicId, type: 'create', findAll:this.findAllExamForTopic})}
+                        buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
+                />
             </View>
         )
     }

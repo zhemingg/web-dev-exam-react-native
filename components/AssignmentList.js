@@ -27,7 +27,6 @@ export default class AssignmentList extends React.Component {
             .findAllAssignmentForTopic(this.props.topicId)
             .then(assignments => {
                 this.setState({assignments})
-                //console.log(assignments)
             })
     }
 
@@ -53,13 +52,15 @@ export default class AssignmentList extends React.Component {
                             key={index}
                             rightIcon = {<Icon name={'delete'} size={30} color='red'
                             onPress={() => this.deleteAssignment(assignment.id)}/>}
-                            title={assignment.id}/>))}
+                            title={assignment.title}/>))}
                 <Button title="Create Assignment"
                         onPress={() => {
                             this.props.navigation.navigate('AssignmentWidget',
                                 {topicId: this.state.topicId, type: 'create', findAll:this.findAllAssignmentForTopic}
                             )
-                        }}/>
+                        }}
+                        buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
+                />
 
             </ScrollView>
         )

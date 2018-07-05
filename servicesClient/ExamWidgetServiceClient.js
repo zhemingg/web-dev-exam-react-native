@@ -44,7 +44,7 @@ class ExamWidgetServiceClient{
     }
 
     deleteExam(examId){
-        return fetch("http://localhost:8080/api/exam/" + examId,{
+        return fetch("http://localhost:8080/api/widget/" + examId,{
             method: 'delete'
         }).then(response => (response))
     }
