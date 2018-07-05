@@ -1,11 +1,12 @@
 import React from 'react';
-import {ScrollView, Text, View, TextInput, Alert} from  'react-native';
-import {Button, FormLabel, FormInput, CheckBox, Icon} from 'react-native-elements';
+import {ScrollView, View} from 'react-native';
+import {Button, FormLabel, FormInput, CheckBox, FormValidationMessage, Text} from 'react-native-elements';
 import TrueOrFalseQuestionServiceClient from "../servicesClient/TrueOrFalseQuestionServiceClient";
 
-export default class TrueOrFalseQuestionEditor extends React.Component{
+export default class TrueOrFalseQuestionEditor extends React.Component {
     static navigationOptions = {title: 'TrueOrFalseQuestionEditor'};
-    constructor(props){
+
+    constructor(props) {
         super(props);
         this.state = {
             question: {
@@ -71,8 +72,8 @@ export default class TrueOrFalseQuestionEditor extends React.Component{
         }
     }
 
-    renderTrueOrFalse(){
-        return(
+    renderTrueOrFalse() {
+        return (
             <View>
                 <CheckBox
                     center
@@ -104,15 +105,29 @@ export default class TrueOrFalseQuestionEditor extends React.Component{
         )
     }
 
-    viewMode(isPreview){
-        if(isPreview) {
+    viewMode(isPreview) {
+        if (isPreview) {
             return (
-                <View>
-                    <Text>Preview</Text>
-                    <Text>{this.state.question.title}</Text>
-                    <Text>{this.state.question.points}</Text>
-                    <Text>{this.state.question.description}</Text>
+
+                <View style={{padding: 15}}>
+                    <Text h2>Preview</Text>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text h4>{this.state.question.title}</Text>
+                        <Text h4>{this.state.question.points} pts</Text>
+                    </View>
+                    <Text h5 style={{marginTop: 15}}>Description: {this.state.question.description}</Text>
                     {this.renderTrueOrFalse()}
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Button title="Cancel" buttonStyle={{backgroundColor: 'red', borderRadius: 10, marginTop: 10}}/>
+                        <Button title="Submit"
+                                buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}/>
+                    </View>
                 </View>
             )
         } else {
@@ -125,7 +140,9 @@ export default class TrueOrFalseQuestionEditor extends React.Component{
                         this.setState({question: question})
                     }}
                                placeholder={'Please add title'}
+                               backgroundColor="white"
                                value={this.state.question.title}/>
+                    <FormValidationMessage>Title is required</FormValidationMessage>
 
                     <FormLabel>Question Points</FormLabel>
                     <FormInput onChangeText={(text) => {
@@ -134,42 +151,58 @@ export default class TrueOrFalseQuestionEditor extends React.Component{
                         this.setState({question: question})
                     }}
                                placeholder={'Please set points'}
+                               backgroundColor="white"
                                value={this.state.question.points}/>
+                    <FormValidationMessage>Points are required</FormValidationMessage>
 
                     <FormLabel>Question Description</FormLabel>
-                    <TextInput
+                    <FormInput
+                        backgroundColor="white"
                         multiline={true}
-                        numberOfLines={10}
                         onChangeText={(text) => {
                             let question = this.state.question;
                             question.description = text;
                             this.setState({question: question})
                         }}
                         placeholder={'Please add description'}
+                        backgroundColor="white"
                         value={this.state.question.description}/>
+                    <FormValidationMessage>Description is required</FormValidationMessage>
+
                     {this.renderTrueOrFalse()}
-                    <Button title="Cancel Modify"
-                            onPress={() => (this.props.navigation.goBack())}/>
+
                     <Button title="Delete Question"
+                            buttonStyle={{backgroundColor: 'red', borderRadius: 10, marginTop: 10}}
                             onPress={() => {
                                 (this.deleteQuestion())
                                 this.props.navigation.goBack()
                             }}/>
-                    <Button title="Submit"
-                            onPress={() => {
-                                this.saveOrUpdate(this.props.navigation.getParam('type'))
-                                this.props.navigation.goBack()
-                            }}/>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Button title="Cancel Modify"
+                                buttonStyle={{backgroundColor: 'red', borderRadius: 10, marginTop: 10}}
+                                onPress={() => {
+                                    this.props.navigation.goBack();
+                                }}/>
+                        <Button title="Create or Update"
+                                buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
+                                onPress={() => {
+                                    this.saveOrUpdate(this.props.navigation.getParam('type'))
+                                    this.props.navigation.goBack()
+                                }}/>
+                    </View>
                 </View>
             )
         }
     }
 
-    render(){
-        {console.log(this.state)}
-        return(
-            <ScrollView>
+    render() {
+        return (
+            <ScrollView style={{margin: 15}}>
                 <Button title="Preview"
+                        buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
                         onPress={() => this.setState({preview: !this.state.preview})}/>
                 {this.viewMode(this.state.preview)}
             </ScrollView>

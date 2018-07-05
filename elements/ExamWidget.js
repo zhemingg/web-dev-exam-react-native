@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, View, TextInput, Alert} from 'react-native';
-import {Text, Button, FormLabel, FormInput, ListItem} from 'react-native-elements';
+import {Text, Button, FormLabel, FormInput, ListItem, FormValidationMessage} from 'react-native-elements';
 import ExamWidgetServiceClient from "../servicesClient/ExamWidgetServiceClient";
 import QuestionTypePicker from './QuestionTypePicker';
 import BaseExamQuestionServiceClient from "../servicesClient/BaseExamQuestionServiceClient";
@@ -82,7 +82,6 @@ export default class ExamWidget extends React.Component {
     }
 
     updateExam(exam) {
-        //console.log('save-update')
         return this.ExamWidgetServiceClient
             .updateExam(exam.id, exam);
 
@@ -137,6 +136,7 @@ export default class ExamWidget extends React.Component {
                 <View>
                     <QuestionTypePicker setQuestionType={this.setCurQuestionType}/>
                     <Button title="Add a question"
+                            buttonStyle={{backgroundColor: 'orange', borderRadius: 10, marginTop: 10}}
                             onPress={() => this.addQuestion(this.state.curQuestionType)}/>
                 </View>
             )
@@ -148,11 +148,8 @@ export default class ExamWidget extends React.Component {
     }
 
     renderQuestions() {
-
-
         return (
             <View>
-                <Text>Render Questions</Text>
                 {
                     this.state.exam.questions.map(
                         (question, index) => {
@@ -216,8 +213,6 @@ export default class ExamWidget extends React.Component {
                             }
 
                         })
-
-
                 }
             </View>
         )
@@ -228,12 +223,24 @@ export default class ExamWidget extends React.Component {
     viewMode(isPreview) {
         if (isPreview) {
             return (
-                <View>
-                    <Text>Preview</Text>
-                    <Text>{this.state.exam.title}</Text>
-                    <Text>{this.state.exam.points}</Text>
-                    <Text>{this.state.exam.description}</Text>
+                <View style={{padding:15}}>
+                    <Text h2>Preview</Text>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text h4>{this.state.exam.title}</Text>
+                        <Text h4>{this.state.exam.points} pts</Text>
+                    </View>
+                    <Text h5 style={{marginTop: 15}}>Description: {this.state.exam.description}</Text>
                     {this.renderQuestions()}
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Button title="Cancel"  buttonStyle={{backgroundColor: 'red', borderRadius: 10, marginTop: 10}}/>
+                        <Button title="Submit"  buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}/>
+                    </View>
                 </View>
             );
         } else {
@@ -246,7 +253,9 @@ export default class ExamWidget extends React.Component {
                         this.setState({exam: exam})
                     }}
                                placeholder={'Please add title'}
+                               backgroundColor="white"
                                value={this.state.exam.title}/>
+                    <FormValidationMessage>Title is required</FormValidationMessage>
 
                     <FormLabel>Exam Points</FormLabel>
                     <FormInput onChangeText={(text) => {
@@ -255,12 +264,14 @@ export default class ExamWidget extends React.Component {
                         this.setState({exam: exam})
                     }}
                                placeholder={'Please set points'}
+                               backgroundColor="white"
                                value={this.state.exam.points}/>
+                    <FormValidationMessage>Points are required</FormValidationMessage>
 
                     <FormLabel>Exam Description</FormLabel>
-                    <TextInput
+                    <FormInput
+                        backgroundColor="white"
                         multiline={true}
-                        numberOfLines={10}
                         onChangeText={(text) => {
                             let exam = this.state.exam;
                             exam.description = text;
@@ -268,14 +279,27 @@ export default class ExamWidget extends React.Component {
                         }}
                         placeholder={'Please add description'}
                         value={this.state.exam.description}/>
-                    <Button title="Save"
-                            onPress={() => {
-                                this.saveOrUpdate(this.state.type)
-                                    .then(this.props.navigation.goBack())
-                            }
-                            }/>
+                    <FormValidationMessage>Description is required</FormValidationMessage>
+
                     {this.renderQuestions()}
                     {this.addQuestionView(this.state.type)}
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Button title="Create or Update"
+                                buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
+                                onPress={() => {
+                                    this.saveOrUpdate(this.state.type)
+                                        .then(this.props.navigation.goBack())
+                                }
+                                }/>
+                        <Button title="Cancel Modify"
+                                buttonStyle={{backgroundColor: 'red', borderRadius: 10, marginTop: 10}}
+                                onPress={() => {
+                                    this.props.navigation.goBack();
+                                }}/>
+                    </View>
                 </View>
             );
         }
@@ -284,8 +308,9 @@ export default class ExamWidget extends React.Component {
 
     render() {
         return (
-            <ScrollView>
+            <ScrollView style={{margin: 15}}>
                 <Button title="Preview"
+                        buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
                         onPress={() => this.setState({preview: !this.state.preview})}/>
                 {this.viewMode(this.state.preview)}
             </ScrollView>

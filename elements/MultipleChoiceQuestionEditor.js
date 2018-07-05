@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, Text, TextInput, Alert, View} from 'react-native';
-import {FormLabel, FormInput, Button, CheckBox, ListItem, Icon} from 'react-native-elements';
+import {FormLabel, FormInput, Button, CheckBox, FormValidationMessage, Icon} from 'react-native-elements';
 import MultipleChoiceQuestionServiceClient from "../servicesClient/MultipleChoiceQuestionServiceClient";
 
 export default class MultipleChoiceQuestionEditor extends React.Component {
@@ -108,12 +108,25 @@ export default class MultipleChoiceQuestionEditor extends React.Component {
     viewMode(isPreview) {
         if (isPreview) {
             return (
-                <View>
-                    <Text>Preview</Text>
-                    <Text>{this.state.question.title}</Text>
-                    <Text>{this.state.question.points}</Text>
-                    <Text>{this.state.question.description}</Text>
+                <View style={{padding: 15}}>
+                    <Text h2>Preview</Text>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text h4>{this.state.question.title}</Text>
+                        <Text h4>{this.state.question.points} pts</Text>
+                    </View>
+                    <Text h5 style={{marginTop: 15}}>Description: {this.state.question.description}</Text>
                     {this.renderChoice()}
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Button title="Cancel" buttonStyle={{backgroundColor: 'red', borderRadius: 10, marginTop: 10}}/>
+                        <Button title="Submit"
+                                buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}/>
+                    </View>
                 </View>
             )
 
@@ -127,7 +140,9 @@ export default class MultipleChoiceQuestionEditor extends React.Component {
                         this.setState({question: question})
                     }}
                                placeholder={'Please add title'}
+                               backgroundColor="white"
                                value={this.state.question.title}/>
+                    <FormValidationMessage>Title is required</FormValidationMessage>
 
                     <FormLabel>Question Points</FormLabel>
                     <FormInput onChangeText={(text) => {
@@ -136,12 +151,14 @@ export default class MultipleChoiceQuestionEditor extends React.Component {
                         this.setState({question: question})
                     }}
                                placeholder={'Please set points'}
+                               backgroundColor="white"
                                value={this.state.question.points}/>
+                    <FormValidationMessage>Points are required</FormValidationMessage>
 
                     <FormLabel>Question Description</FormLabel>
-                    <TextInput
+                    <FormInput
+                        backgroundColor="white"
                         multiline={true}
-                        numberOfLines={10}
                         onChangeText={(text) => {
                             let question = this.state.question;
                             question.description = text;
@@ -149,45 +166,58 @@ export default class MultipleChoiceQuestionEditor extends React.Component {
                         }}
                         placeholder={'Please add description'}
                         value={this.state.question.description}/>
+                    <FormValidationMessage>Description is required</FormValidationMessage>
 
                     <FormLabel>New Choice</FormLabel>
                     <FormInput onChangeText={(text) => {
                         this.setState({tempChoice: text})
                     }}
                                placeholder={'Please add a new Choice'}
+                               backgroundColor="white"
                                value={this.state.question.tempChoice}/>
+                    <FormValidationMessage>Choice is required</FormValidationMessage>
                     <Button title="Add a choice"
+                            buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
                             onPress={() => {
                                 if (this.checkValidOfChoice()) {
                                     this.addChoice();
                                 }
                             }}/>
-                    <Button title="Cancel Modify"
-                            onPress={() => (this.props.navigation.goBack())}/>
+                    {this.renderChoice()}
+
                     <Button title="Delete Question"
+                            buttonStyle={{backgroundColor: 'red', borderRadius: 10, marginTop: 10}}
                             onPress={() => {
                                 (this.deleteQuestion())
                                 this.props.navigation.goBack()
                             }}/>
-                    <Button title="Submit"
-                            onPress={() => {
-                                this.saveOrUpdate(this.props.navigation.getParam('type'))
-                                this.props.navigation.goBack()
-                            }}/>
-                    {this.renderChoice()}
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Button title="Cancel Modify"
+                                buttonStyle={{backgroundColor: 'red', borderRadius: 10, marginTop: 10}}
+                                onPress={() => {
+                                    this.props.navigation.goBack();
+                                }}/>
+                        <Button title="Create or Update"
+                                buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
+                                onPress={() => {
+                                    this.saveOrUpdate(this.props.navigation.getParam('type'))
+                                    this.props.navigation.goBack()
+                                }}/>
+                    </View>
                 </View>
             )
         }
     }
 
-    deleteChoice(choiceId){
-        console.log(choiceId)
+    deleteChoice(choiceId) {
         let question = this.state.question;
-        console.log(question.choices)
-        question.choices.splice(choiceId,1);
-        console.log(question.choices)
+        //console.log(question.choices)
+        question.choices.splice(choiceId, 1);
+        //console.log(question.choices)
         this.setState(question);
-        //console.log(this.state.question.choices)
     }
 
     renderChoice() {
@@ -197,17 +227,18 @@ export default class MultipleChoiceQuestionEditor extends React.Component {
                 (choice, index) => (
                     <View key={index}
                           style={{
-                        flexDirection : 'row',
-                    }}>
-
-                        <CheckBox
-                                  title={choice}
-                                  checkedIcon='dot-circle-o'
-                                  uncheckedIcon='circle-o'
-                                  containerStyle={this.state.question.correctChoice === choice && {backgroundColor: 'lightskyblue'}}
-                                  onPress={() => this.setCorrectChoice(choice)}
-                                  checked={this.state.question.correctChoice === choice}
-                        />
+                              flexDirection: 'row'
+                          }}>
+                        <View width={300} style={{marginTop:10}}>
+                            <CheckBox
+                                title={choice}
+                                checkedIcon='dot-circle-o'
+                                uncheckedIcon='circle-o'
+                                containerStyle={this.state.question.correctChoice === choice && {backgroundColor: 'lightskyblue'}}
+                                onPress={() => this.setCorrectChoice(choice)}
+                                checked={this.state.question.correctChoice === choice}
+                            />
+                        </View>
                         <Icon name={'delete'} size={30} color='red'
                               onPress={() => this.deleteChoice(index)}/>
                     </View>
@@ -221,8 +252,9 @@ export default class MultipleChoiceQuestionEditor extends React.Component {
 
     render() {
         return (
-            <ScrollView>
+            <ScrollView style={{margin: 15}}>
                 <Button title="Preview"
+                        buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
                         onPress={() => this.setState({preview: !this.state.preview})}/>
                 {this.viewMode(this.state.preview)}
 

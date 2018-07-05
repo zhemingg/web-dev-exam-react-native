@@ -45,7 +45,7 @@ export default class ExamList extends React.Component{
                             key={index}
                             rightIcon = {<Icon name={'delete'} size={30} color='red'
                                                onPress={() => this.deleteExam(exam.id)}/>}
-                            title={exam.id}
+                            title={exam.title}
                             onPress={() => {
                                 this.props.navigation.navigate('ExamWidget',
                                     {topicId: this.state.topicId, type: 'update',

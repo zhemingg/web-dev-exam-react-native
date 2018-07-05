@@ -1,11 +1,12 @@
 import React from 'react';
-import {ScrollView, Text, View, TextInput, Alert} from  'react-native';
-import {Button, FormLabel, FormInput, ListItem, Icon} from 'react-native-elements';
+import {ScrollView, View, TextInput, Alert} from 'react-native';
+import {Button, FormLabel, FormInput, ListItem, Icon, Text, FormValidationMessage} from 'react-native-elements';
 import FillInTheBlankQuestionServiceClient from "../servicesClient/FillInTheBlankQuestionServiceClient";
 
-export default class FillInTheBlankQuestionEditor extends React.Component{
+export default class FillInTheBlankQuestionEditor extends React.Component {
     static navigationOptions = {title: 'FillInTheBlankQuestionEditor'};
-    constructor(props){
+
+    constructor(props) {
         super(props);
         this.state = {
             question: {
@@ -14,12 +15,12 @@ export default class FillInTheBlankQuestionEditor extends React.Component{
                 points: '',
                 description: '',
                 questionType: 'fillInTheBlankQuestion',
-                items:[]
+                items: []
             },
             preview: false,
             type: '',
             examId: '',
-            newItem:''
+            newItem: ''
         }
         this.FillInTheBlankQuestionServiceClient = FillInTheBlankQuestionServiceClient.instance;
         this.renderItems = this.renderItems.bind(this);
@@ -74,19 +75,19 @@ export default class FillInTheBlankQuestionEditor extends React.Component{
         }
     }
 
-    addNewTest(){
-        if (this.checkValidForItem(this.state.newItem)){
+    addNewTest() {
+        if (this.checkValidForItem(this.state.newItem)) {
             let question = this.state.question;
             question.items.push(this.state.newItem);
             this.setState({question});
         }
     }
 
-    checkValidForItem(str){
-        if (str === ''){
+    checkValidForItem(str) {
+        if (str === '') {
             Alert.alert('The test can not be empty');
             return false;
-        } else if (str.indexOf('[') === '-1' || str.indexOf(']') === '-1'){
+        } else if (str.indexOf('[') === '-1' || str.indexOf(']') === '-1') {
             console.log(str.indexOf('['));
             Alert.alert('The input is not valid, please check again');
             return false;
@@ -96,15 +97,29 @@ export default class FillInTheBlankQuestionEditor extends React.Component{
     }
 
 
-    viewMode(isPreview){
-        if(isPreview) {
+    viewMode(isPreview) {
+        if (isPreview) {
             return (
-                <View>
-                    <Text>Preview</Text>
-                    <Text>{this.state.question.title}</Text>
-                    <Text>{this.state.question.points}</Text>
-                    <Text>{this.state.question.description}</Text>
+
+                <View style={{padding: 15}}>
+                    <Text h2>Preview</Text>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Text h4>{this.state.question.title}</Text>
+                        <Text h4>{this.state.question.points} pts</Text>
+                    </View>
+                    <Text h5 style={{marginTop: 15}}>Description: {this.state.question.description}</Text>
                     {this.renderItemsView()}
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Button title="Cancel" buttonStyle={{backgroundColor: 'red', borderRadius: 10, marginTop: 10}}/>
+                        <Button title="Submit"
+                                buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}/>
+                    </View>
                 </View>
             )
         } else {
@@ -117,7 +132,9 @@ export default class FillInTheBlankQuestionEditor extends React.Component{
                         this.setState({question: question})
                     }}
                                placeholder={'Please add title'}
+                               backgroundColor="white"
                                value={this.state.question.title}/>
+                    <FormValidationMessage>Title is required</FormValidationMessage>
 
                     <FormLabel>Question Points</FormLabel>
                     <FormInput onChangeText={(text) => {
@@ -126,12 +143,14 @@ export default class FillInTheBlankQuestionEditor extends React.Component{
                         this.setState({question: question})
                     }}
                                placeholder={'Please set points'}
+                               backgroundColor="white"
                                value={this.state.question.points}/>
+                    <FormValidationMessage>Points are required</FormValidationMessage>
 
                     <FormLabel>Question Description</FormLabel>
-                    <TextInput
+                    <FormInput
+                        backgroundColor="white"
                         multiline={true}
-                        numberOfLines={10}
                         onChangeText={(text) => {
                             let question = this.state.question;
                             question.description = text;
@@ -139,6 +158,7 @@ export default class FillInTheBlankQuestionEditor extends React.Component{
                         }}
                         placeholder={'Please add description'}
                         value={this.state.question.description}/>
+                    <FormValidationMessage>Description is required</FormValidationMessage>
 
                     <FormLabel>New Test</FormLabel>
                     <FormInput onChangeText={(text) => {
@@ -146,31 +166,43 @@ export default class FillInTheBlankQuestionEditor extends React.Component{
                     }}
                                placeholder={'Please add new test'}
                                value={this.state.newItem}/>
+                    <FormValidationMessage>Put the answer in the '[]'</FormValidationMessage>
                     {this.renderItems()}
                     {this.renderItemsView()}
                     <Button title="Add New Test"
+                            buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
                             onPress={() => (this.addNewTest())}/>
-                    <Button title="Cancel Modify"
-                            onPress={() => (this.props.navigation.goBack())}/>
                     <Button title="Delete Question"
+                            buttonStyle={{backgroundColor: 'red', borderRadius: 10, marginTop: 10}}
                             onPress={() => {
                                 (this.deleteQuestion())
                                 this.props.navigation.goBack()
                             }}/>
-                    <Button title="Submit"
-                            onPress={() => {
-                                this.saveOrUpdate(this.props.navigation.getParam('type'))
-                                this.props.navigation.goBack()
-                            }}/>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between'
+                    }}>
+                        <Button title="Cancel Modify"
+                                buttonStyle={{backgroundColor: 'red', borderRadius: 10, marginTop: 10}}
+                                onPress={() => {
+                                    this.props.navigation.goBack();
+                                }}/>
+                        <Button title="Create or Update"
+                                buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
+                                onPress={() => {
+                                    this.saveOrUpdate(this.props.navigation.getParam('type'))
+                                    this.props.navigation.goBack()
+                                }}/>
+                    </View>
                 </View>
             )
         }
     }
 
-    renderItems(){
+    renderItems() {
         return this.state.question.items.map(
             (item, index) => {
-                return(
+                return (
                     <ListItem
                         title={item}
                         key={index}
@@ -180,16 +212,16 @@ export default class FillInTheBlankQuestionEditor extends React.Component{
         )
     }
 
-    renderItemsView(){
+    renderItemsView() {
         return (
             this.state.question.items.map(
                 (item, index) => {
                     let index1 = item.indexOf('['), index2 = item.indexOf(']');
-                    let part1 = item.substring(0, index1), part2 = item.substring(index2+1);
+                    let part1 = item.substring(0, index1), part2 = item.substring(index2 + 1);
 
-                    return(
+                    return (
                         <View
-                            style={{ flexDirection : 'row', marginTop: 10}}
+                            style={{flexDirection: 'row', marginTop: 10, marginLeft: 15}}
                             key={index}>
                             <Text>{part1}</Text>
                             <TextInput
@@ -203,7 +235,7 @@ export default class FillInTheBlankQuestionEditor extends React.Component{
                                 onPress={
                                     () => {
                                         let question = this.state.question;
-                                        question.items.splice(index,1);
+                                        question.items.splice(index, 1);
                                         this.setState(question);
                                     }
                                 }
@@ -212,16 +244,15 @@ export default class FillInTheBlankQuestionEditor extends React.Component{
                         </View>
                     )
                 }
-
-
             )
         )
     }
 
-    render(){
+    render() {
         return (
-            <ScrollView>
+            <ScrollView style={{margin: 15}}>
                 <Button title="Preview"
+                        buttonStyle={{backgroundColor: 'blue', borderRadius: 10, marginTop: 10}}
                         onPress={() => this.setState({preview: !this.state.preview})}/>
                 {this.viewMode(this.state.preview)}
             </ScrollView>

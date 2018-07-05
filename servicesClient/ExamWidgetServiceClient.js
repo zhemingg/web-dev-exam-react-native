@@ -15,7 +15,6 @@ class ExamWidgetServiceClient{
     }
 
     updateExam(examId, exam) {
-        console.log(exam)
         return fetch ("http://localhost:8080/api/exam/" + examId, {
             method: 'put',
             body: JSON.stringify(exam),
