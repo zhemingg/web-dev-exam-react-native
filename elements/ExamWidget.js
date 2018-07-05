@@ -111,6 +111,11 @@ export default class ExamWidget extends React.Component {
         } else if (questionType === 'TF') {
 
         } else if (questionType === 'FB') {
+            this.props.navigation.navigate('FillInTheBlankQuestionEditor', {
+                type: 'create',
+                examId: this.state.exam.id,
+                findAll: this.findAllQuestionsForExam
+            })
 
         } else {
             this.props.navigation.navigate('EssayQuestionEditor', {
@@ -146,7 +151,7 @@ export default class ExamWidget extends React.Component {
                 {
                     this.state.exam.questions.map(
                         (question, index) => {
-                            if (question.questionType == 'essayQuestion') {
+                            if (question.questionType === 'essayQuestion') {
                                 return (
                                     <ListItem
                                         leftIcon={{name: 'subject'}}
@@ -160,7 +165,7 @@ export default class ExamWidget extends React.Component {
                                 )
                             }
 
-                            if (question.questionType == 'multipleChoiceQuestion') {
+                            if (question.questionType === 'multipleChoiceQuestion') {
                                 return (
                                     <ListItem
                                         leftIcon={{name: 'list'}}
@@ -176,7 +181,22 @@ export default class ExamWidget extends React.Component {
                                 )
                             }
 
+                            if (question.questionType === 'fillInTheBlankQuestion') {
+                                return (
+                                    <ListItem
+                                        leftIcon={{name: 'code'}}
+                                        title={question.title} key={index}
+                                        onPress = {() => this.props.navigation.navigate('FillInTheBlankQuestionEditor', {
+                                            type: 'update',
+                                            examId: this.state.exam.id,
+                                            question: question,
+                                            findAll: this.findAllQuestionsForExam
+                                        })}/>
+                                )
+                            }
+
                         })
+
 
                 }
             </View>
