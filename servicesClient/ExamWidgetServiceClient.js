@@ -15,7 +15,7 @@ class ExamWidgetServiceClient{
     }
 
     updateExam(examId, exam) {
-        return fetch ("http://localhost:8080/api/exam/" + examId, {
+        return fetch ("https://zhemingg-course-manager-react.herokuapp.com/api/exam/" + examId, {
             method: 'put',
             body: JSON.stringify(exam),
             headers: {
@@ -26,13 +26,13 @@ class ExamWidgetServiceClient{
     }
 
     findAllExamForTopic(topicId) {
-        return fetch("http://localhost:8080/api/topic/" + topicId + "/exam")
+        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/topic/" + topicId + "/exam")
             .then(response => (response.json()))
     }
 
     createExam(topicId, exam) {
         console.log(exam);
-        return fetch("http://localhost:8080/api/topic/" + topicId + "/exam", {
+        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/topic/" + topicId + "/exam", {
             method: 'post',
             body: JSON.stringify(exam),
             headers: {
@@ -43,7 +43,7 @@ class ExamWidgetServiceClient{
     }
 
     deleteExam(examId){
-        return fetch("http://localhost:8080/api/widget/" + examId,{
+        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/widget/" + examId,{
             method: 'delete'
         }).then(response => (response))
     }

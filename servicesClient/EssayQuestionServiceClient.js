@@ -15,7 +15,7 @@ class EssayQuestionServiceClient{
     }
 
     updateEssayQuestion(questionId, question) {
-        return fetch ("http://localhost:8080/api/essayQuestion/" + questionId, {
+        return fetch ("https://zhemingg-course-manager-react.herokuapp.com/api/essayQuestion/" + questionId, {
             method: 'put',
             body: JSON.stringify(question),
             headers: {
@@ -26,12 +26,12 @@ class EssayQuestionServiceClient{
     }
 
     findAllEssayQuestionForExam(examId) {
-        return fetch("http://localhost:8080/api/exam/" + examId + "/essayQuestion")
+        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/exam/" + examId + "/essayQuestion")
             .then(response => (response.json()))
     }
 
     createEssayQuestion(examId, question) {
-        return fetch("http://localhost:8080/api/exam/" + examId + "/essayQuestion", {
+        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/exam/" + examId + "/essayQuestion", {
             method: 'post',
             body: JSON.stringify(question),
             headers: {
@@ -42,7 +42,7 @@ class EssayQuestionServiceClient{
     }
 
     deleteEssayQuestion(questionId){
-        return fetch("http://localhost:8080/api/baseExamQuestion/" + questionId,{
+        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/baseExamQuestion/" + questionId,{
             method: 'delete'
         }).then(response => (response))
     }
