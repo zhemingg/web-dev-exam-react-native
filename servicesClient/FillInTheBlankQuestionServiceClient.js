@@ -15,7 +15,7 @@ class FillInTheBlankQuestionServiceClient{
     }
 
     updateFillInTheBlankQuestion(questionId, question) {
-        return fetch ("https://zhemingg-course-manager-react.herokuapp.com/api/fillInTheBlankQuestion/" + questionId, {
+        return fetch ("https://zhemingg-assignment.herokuapp.com/api/fillInTheBlankQuestion/" + questionId, {
             method: 'put',
             body: JSON.stringify(question),
             headers: {
@@ -26,12 +26,12 @@ class FillInTheBlankQuestionServiceClient{
     }
 
     findAllFillInTheBlankQuestionForExam(examId) {
-        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/exam/" + examId + "/fillInTheBlankQuestion")
+        return fetch("https://zhemingg-assignment.herokuapp.com/api/exam/" + examId + "/fillInTheBlankQuestion")
             .then(response => (response.json()))
     }
 
     createFillInTheBlankQuestion(examId, question) {
-        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/exam/" + examId + "/fillInTheBlankQuestion", {
+        return fetch("https://zhemingg-assignment.herokuapp.com/api/exam/" + examId + "/fillInTheBlankQuestion", {
             method: 'post',
             body: JSON.stringify(question),
             headers: {
@@ -42,7 +42,7 @@ class FillInTheBlankQuestionServiceClient{
     }
 
     deleteFillInTheBlankQuestion(questionId){
-        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/baseExamQuestion/" + questionId,{
+        return fetch("https://zhemingg-assignment.herokuapp.com/api/baseExamQuestion/" + questionId,{
             method: 'delete'
         }).then(response => (response))
     }

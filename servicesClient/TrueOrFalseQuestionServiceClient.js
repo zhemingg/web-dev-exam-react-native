@@ -15,7 +15,7 @@ class TrueOrFalseQuestionServiceClient{
     }
 
     updateTrueOrFalseQuestion(questionId, question) {
-        return fetch ("https://zhemingg-course-manager-react.herokuapp.com/api/trueOrFalseQuestion/" + questionId, {
+        return fetch ("https://zhemingg-assignment.herokuapp.com/api/trueOrFalseQuestion/" + questionId, {
             method: 'put',
             body: JSON.stringify(question),
             headers: {
@@ -26,12 +26,12 @@ class TrueOrFalseQuestionServiceClient{
     }
 
     findAllTrueOrFalseQuestionForExam(examId) {
-        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/exam/" + examId + "/trueOrFalseQuestion")
+        return fetch("https://zhemingg-assignment.herokuapp.com/api/exam/" + examId + "/trueOrFalseQuestion")
             .then(response => (response.json()))
     }
 
     createTrueOrFalseQuestion(examId, question) {
-        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/exam/" + examId + "/trueOrFalseQuestion", {
+        return fetch("https://zhemingg-assignment.herokuapp.com/api/exam/" + examId + "/trueOrFalseQuestion", {
             method: 'post',
             body: JSON.stringify(question),
             headers: {
@@ -42,7 +42,7 @@ class TrueOrFalseQuestionServiceClient{
     }
 
     deleteTrueOrFalseQuestion(questionId){
-        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/baseExamQuestion/" + questionId,{
+        return fetch("https://zhemingg-assignment.herokuapp.com/api/baseExamQuestion/" + questionId,{
             method: 'delete'
         }).then(response => (response))
     }

@@ -15,7 +15,7 @@ class MultipleChoiceQuestionServiceClient{
     }
 
     updateMultipleChoiceQuestion(questionId, question) {
-        return fetch ("https://zhemingg-course-manager-react.herokuapp.com/api/multipleChoiceQuestion/" + questionId, {
+        return fetch ("https://zhemingg-assignment.herokuapp.com/api/multipleChoiceQuestion/" + questionId, {
             method: 'put',
             body: JSON.stringify(question),
             headers: {
@@ -26,12 +26,12 @@ class MultipleChoiceQuestionServiceClient{
     }
 
     findAllMultipleChoiceQuestionForExam(examId) {
-        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/exam/" + examId + "/multipleChoiceQuestion")
+        return fetch("https://zhemingg-assignment.herokuapp.com/api/exam/" + examId + "/multipleChoiceQuestion")
             .then(response => (response.json()))
     }
 
     createMultipleChoiceQuestion(examId, question) {
-        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/exam/" + examId + "/multipleChoiceQuestion", {
+        return fetch("https://zhemingg-assignment.herokuapp.com/api/exam/" + examId + "/multipleChoiceQuestion", {
             method: 'post',
             body: JSON.stringify(question),
             headers: {
@@ -42,7 +42,7 @@ class MultipleChoiceQuestionServiceClient{
     }
 
     deleteMultipleChoiceQuestion(questionId){
-        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/baseExamQuestion/" + questionId,{
+        return fetch("https://zhemingg-assignment.herokuapp.com/api/baseExamQuestion/" + questionId,{
             method: 'delete'
         }).then(response => (response))
     }

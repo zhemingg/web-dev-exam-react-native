@@ -15,7 +15,7 @@ class AssignmentWidgetServiceClient{
     }
 
     updateAssignment(assignmentId, assignment) {
-        return fetch ("https://zhemingg-course-manager-react.herokuapp.com/api/assignment/" + assignmentId, {
+        return fetch ("https://zhemingg-assignment.herokuapp.com/api/assignment/" + assignmentId, {
             method: 'put',
             body: JSON.stringify(assignment),
             headers: {
@@ -26,12 +26,12 @@ class AssignmentWidgetServiceClient{
     }
 
     findAllAssignmentForTopic(topicId) {
-        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/topic/" + topicId + "/assignment")
+        return fetch("https://zhemingg-assignment.herokuapp.com/api/topic/" + topicId + "/assignment")
             .then(response => (response.json()))
     }
 
     createAssignment(topicId, assignment) {
-        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/topic/" + topicId + "/assignment", {
+        return fetch("https://zhemingg-assignment.herokuapp.com/api/topic/" + topicId + "/assignment", {
             method: 'post',
             body: JSON.stringify(assignment),
             headers: {
@@ -42,7 +42,7 @@ class AssignmentWidgetServiceClient{
     }
 
     deleteAssignment(assignmentId){
-        return fetch("https://zhemingg-course-manager-react.herokuapp.com/api/widget/" + assignmentId,{
+        return fetch("https://zhemingg-assignment.herokuapp.com/api/widget/" + assignmentId,{
             method: 'delete'
         }).then(response => (response))
     }
